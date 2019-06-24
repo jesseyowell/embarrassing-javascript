@@ -1,4 +1,3 @@
-
 class Node {
   constructor(data, left = null, right = null) {
     this.data = data;
@@ -6,14 +5,11 @@ class Node {
     this.right = right;
   }
 }
-
 // BST code below is compliments of https://codepen.io/beaucarnes/pen/ryKvEQ?editors=0011
-
 class BinarySearchTree {
   constructor() {
     this.root = null;
   }
-  
   add(data) {
     const node = this.root;
     if (node === null) {
@@ -42,9 +38,7 @@ class BinarySearchTree {
       return searchTree(node);
     }
   }
-
 // below is original code (by me)
-
   findMyNumber(number) {
   	let temp = this.root;
   	while (temp.data !== number) {    
@@ -59,30 +53,75 @@ class BinarySearchTree {
    return console.log(`${number} exists!`);
   }
 
-  findNodeDistance(nodeOne, nodeTwo) {
- 
-  	let nodeCount = 0;
-  	let temp = this.root;
+  findLCA(nodeOne, nodeTwo) {
+  	let current = this.root;
 
-  	const dataCounter = function(node) {
-  	  while(temp.data !== node) {
-  	    if(node > temp.data && temp.right !== null) {
-          temp = temp.right;
-          nodeCount++;
-        }  
-        else if (node < temp.data && temp.left !== null) {
-      	  temp = temp.left;
-          nodeCount++;
-  	    }
-        else `these numbers aren't found!`
-  	   }   
-       return nodeCount; 
+  	while (current !== null) {    
+     if(nodeOne > current.data && nodeTwo > current.data) {
+     	current = current.right;
      }
-     
-     return ( dataCounter(nodeOne) + dataCounter(nodeTwo) ); 
-  }  	
+     else if (nodeOne < current.data && nodeTwo < current.data) {
+     	current = current.left;
+     }
+     else break;
+   }
+   return current.data;
+  }	
 
-}  
+  listPusher(node) {
+    let current = this.root;
+    let nodeList = [];
+    
+    while (current !== null) {
+     if(node > current.data && current.right !== null) {
+      current = current.right;
+      nodeList.push(current.data);
+     }   
+     else if (node < current.data && current.left !== null) {
+      current = current.left;
+      nodeList.push(current.data);
+     }
+     else break;
+     }
+     return nodeList;
+   }
+ 
+  findNodeDistance(nodeOne, nodeTwo) {
+  
+   let nodeOneList = this.listPusher(nodeOne);
+   console.log(nodeOneList);
+   let nodeTwoList = this.listPusher(nodeTwo);
+   console.log(nodeTwoList);
+   let finalNodeList = [];
+   
+   // let's combine the two lists using our listPusher function below 
+
+   let concatList = nodeOneList.concat(nodeTwoList);
+
+   finalNodeList = concatList;
+
+   // this code is for searching and removing both duplicates
+   for(let i = 0; i < concatList.length; i++) {
+     let currentItem = concatList[i];
+     let foundCount = 0;
+     for(let j = 0; j < concatList.length; j++) {
+          if (concatList[i] == concatList[j])
+            foundCount++;
+       }
+       // if we find a duplicate, let's remove it from our final list  
+         if(foundCount > 1) {
+           for(let h = 0; h < concatList.length; h++) {
+             if(finalNodeList[h] == currentItem) {                
+                finalNodeList.splice(h, 1);
+                h--;
+              }
+           }            
+        }
+     }
+
+     return finalNodeList.length;   
+  }
+}
 
 let BST = new BinarySearchTree();
 BST.add(8);
@@ -95,32 +134,4 @@ BST.add(4);
 BST.add(7);
 BST.add(13);
 
-
-# Example of the finding the oldest  
-
-FUNCTION findTheOldest(root)
-  SET temp to root
-  WHILE temp.right exists
-    SET temp.right to temp
-  END WHILE
-  RETURN temp
-END FUNCTION
-
-
-
-function findMyNumber(number) {
-
-   let temp = this.root;
-
-   while (temp.value !=== number) {
-     if(number > temp.value && temp.right) {
-     	temp = temp.right;
-     }
-     else if (number < temp.value && temp.left) {
-     	temp = temp.left;
-     }
-     else return ('number not found!')
-   }
-   return `${number} exists!`;
-}
 
