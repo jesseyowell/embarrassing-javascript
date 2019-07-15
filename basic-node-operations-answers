@@ -1,0 +1,23 @@
+1. Run the commands sort, wc and uniq on the commands.js file. Explain how they work and what the output was.
+
+'sort' seems to sort every line in alphanumeric order. Certain special characters seem to be evaluated differently, so it seems words will be sorted first, and then words with characters and spaces in specific order.
+
+'wc' will show the newlines, words, and byte counts and ends up like this:
+
+[Mon Jun 24 10:01:45 jesseyowell@archgoat]$ wc commands.js
+38      89     893 commands.js
+
+'uniq' sorts and returns any unique instances of a line within the file, as long as the lines are next to each other. this doesn't actually do anything on commands.js, as there are no duplicate lines in the file.
+
+2. Using the pipe (|) connect at least two commands and run it on commands.js. Explain what the output was and why the specific data was outputted.
+
+Here's an output difference of two commands:
+
+[Mon Jun 24 10:15:39 jesseyowell@archgoat]$ wc commands.js
+      38      89     893 commands.js
+[Mon Jun 24 10:15:46 jesseyowell@archgoat]$ sort commands.js | uniq | wc
+      32      86     871
+
+In the first one, we're just doing a simple 'wc' on the file. In the second, we're sorting the file in alphanumeric order by lines, then removing any duplicate lines and then giving us the total newlines, words, and byte counts. By doing this, we'll get a smaller count using 'wc'.
+
+
